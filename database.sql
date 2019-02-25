@@ -10,6 +10,15 @@ CREATE TABLE three_one_one_request (
 -- COPY auto_incident( Put attributes here )
 -- FROM 'NYPD_Motor_Vehicle_Collisions.csv' DELIMITER ',' CSV HEADER;
 
+CREATE TABLE victim_service_calls(
+    call_time DATETIME NOT NULL,
+    complaint_type VARCHAR NOT NULL,
+    street_name VARCHAR,
+    cross_street_name VARCHAR,
+    persons_injured INT NOT NULL,
+    persons_killed INT NOT NULL
+);
+
 CREATE TABLE collision_injuries (
     collision_time DATETIME NOT NULL,
     street_name VARCHAR,
@@ -39,4 +48,20 @@ CREATE TABLE borough_vehicle (
     vehicle2_type VARCHAR,
     factor_vehicle1 VARCHAR NOT NULL,
     factor_vehicle2 VARCHAR
+);
+
+CREATE TABLE zipcode (
+    zipcode VARCHAR(5) NOT NULL,
+    borough VARCHAR(15) NOT NULL,
+    longitude VARCHAR NOT NULL,
+    latitude VARCHAR NOT NULL,
+    location VARCHAR NOT NULL
+);
+
+CREATE TABLE victim_zipcode (
+    collision_date DATE,
+    zipcode VARCHAR(5) NOT NULL,
+    address_type VARCHAR(12) NOT NULL,
+    persons_killed INT NOT NULL,
+    persons_injured INT NOT NULL
 );
