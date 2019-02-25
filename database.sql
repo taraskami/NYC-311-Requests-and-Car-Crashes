@@ -1,22 +1,12 @@
-CREATE TABLE auto_incident (
-    -- Put attributes here 
-);
-
-CREATE TABLE three_one_one_request (
-    -- Put attributes here
-);
-
--- This is one way I see of creating a table. Could also look at how it's done for baseball data in HW3
--- COPY auto_incident( Put attributes here )
--- FROM 'NYPD_Motor_Vehicle_Collisions.csv' DELIMITER ',' CSV HEADER;
-
 CREATE TABLE victim_service_calls(
     call_time DATETIME NOT NULL,
     complaint_type VARCHAR NOT NULL,
     street_name VARCHAR,
     cross_street_name VARCHAR,
     persons_injured INT NOT NULL,
-    persons_killed INT NOT NULL
+    persons_killed INT NOT NULL,
+
+    PRIMARY KEY(call_time, street_name)
 );
 
 CREATE TABLE collision_injuries (
@@ -27,7 +17,8 @@ CREATE TABLE collision_injuries (
     factor_vehicle1 VARCHAR NOT NULL,
     factor_vehicle2 VARCHAR,
     vehicle1_type VARCHAR NOT NULL,
-    vehicle2_type VARCHAR
+    vehicle2_type VARCHAR,
+    PRIMARY KEY(collision_time, street_name)
 );
 
 CREATE TABLE service_calls (
@@ -38,16 +29,19 @@ CREATE TABLE service_calls (
     location_type VARCHAR,
     resolution VARCHAR NOT NULL,
     channel_type VARCHAR NOT NULL,
-    status VARCHAR NOT NULL
+    call_status VARCHAR NOT NULL,
+    PRIMARY KEY(call_time, street_name)
 );
 
 CREATE TABLE borough_vehicle (
+    collision_id INT(10) UNSIGNED NOT NULL,
     collision_date DATE,
     borough VARCHAR(15),
     vehicle1_type VARCHAR NOT NULL,
     vehicle2_type VARCHAR,
     factor_vehicle1 VARCHAR NOT NULL,
-    factor_vehicle2 VARCHAR
+    factor_vehicle2 VARCHAR,
+    PRIMARY KEY(collision_id)
 );
 
 CREATE TABLE zipcode (
@@ -55,13 +49,17 @@ CREATE TABLE zipcode (
     borough VARCHAR(15) NOT NULL,
     longitude VARCHAR NOT NULL,
     latitude VARCHAR NOT NULL,
-    location VARCHAR NOT NULL
+    _location VARCHAR NOT NULL,
+    complaint_type VARCHAR NOT NULL,
+    PRIMARY KEY(longitude, latitude)
 );
 
 CREATE TABLE victim_zipcode (
-    collision_date DATE,
+    collision_id INT(10) UNSIGNED NOT NULL,
+    collision_date DATE NOT NULL,
     zipcode VARCHAR(5) NOT NULL,
-    address_type VARCHAR(12) NOT NULL,
+    address_type VARCHAR,
     persons_killed INT NOT NULL,
-    persons_injured INT NOT NULL
+    persons_injured INT NOT NULL,
+    PRIMARY KEY(collision_id)
 );
