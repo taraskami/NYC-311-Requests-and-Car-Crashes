@@ -1,3 +1,10 @@
+DROP TABLE IF EXISTS victim_service_calls;
+DROP TABLE IF EXISTS collision_injuries;
+DROP TABLE IF EXISTS service_calls;
+DROP TABLE IF EXISTS borough_vehicle;
+DROP TABLE IF EXISTS zipcode;
+DROP TABLE IF EXISTS victim_zipcode;
+
 CREATE TABLE victim_service_calls(
     call_time DATETIME NOT NULL,
     complaint_type VARCHAR NOT NULL,
