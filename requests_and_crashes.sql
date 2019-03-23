@@ -7,12 +7,12 @@ DROP TABLE IF EXISTS victim_zipcode;
 
 CREATE TEMPORARY TABLE requests_tmp (
     id VARCHAR NOT NULL,
-    open_date DATE NOT NULL,
-    close_date DATE NOT NULL,
+    open_date TIMESTAMP NOT NULL,
+    close_date TIMESTAMP,
     complaint_type VARCHAR NOT NULL,
     descriptor VARCHAR NOT NULL,
     location_type VARCHAR NOT NULL,
-    zip INT NOT NULL,
+    zip INT DEFAULT NULL,
     address VARCHAR NOT NULL,
     street VARCHAR NOT NULL,
     crossstreet1 VARCHAR NOT NULL,
@@ -23,30 +23,26 @@ CREATE TEMPORARY TABLE requests_tmp (
     city VARCHAR NOT NULL,
     landmark VARCHAR NOT NULL,
     status VARCHAR NOT NULL,
-    resoltuion VARCHAR NOT NULL,
     boro VARCHAR NOT NULL,
-    x_coord INT NOT NULL,
-    y_coord INT NOT NULL,
+    x_coord INT,
+    y_coord INT,
     bridge_highway_name VARCHAR,
     bridge_highway_direction VARCHAR,
     bridge_road_ramp VARCHAR,
     bridge_highway_segment VARCHAR,
-    lat NUMERIC(8, 4) NOT NULL,
-    long NUMERIC(8, 4) NOT NULL,
-    location VARCHAR NOT NULL
+    lat NUMERIC(8, 4),
+    long NUMERIC(8, 4)
 );
 
 CREATE TEMPORARY TABLE crashes_tmp (
     crash_date DATE NOT NULL,
     time TIME NOT NULL,
     boro VARCHAR NOT NULL,
-    zip INT NOT NULL,
+    zip INT,
     lat NUMERIC(8, 4),
     long NUMERIC(8, 4),
-    location VARCHAR NOT NULL,
     street VARCHAR NOT NULL,
     crossstreet VARCHAR NOT NULL,
-    offstreet VARCHAR NOT NULL,
     persons_injured INT NOT NULL,
     persons_killed INT NOT NULL,
     peds_injured INT NOT NULL,
@@ -69,14 +65,13 @@ CREATE TEMPORARY TABLE crashes_tmp (
 );
 
 CREATE TABLE victim_service_calls(
-    call_time DATE NOT NULL,
-    complaint_type VARCHAR NOT NULL,
+    call_date DATE NOT NULL,
+    call_time TIME NOT NULL,
     street_name VARCHAR,
     cross_street_name VARCHAR,
     persons_injured INT NOT NULL,
     persons_killed INT NOT NULL,
-
-    PRIMARY KEY(call_time, street_name)
+    PRIMARY KEY(call_date, call_time, street_name)
 );
 
 CREATE TABLE collision_injuries (
