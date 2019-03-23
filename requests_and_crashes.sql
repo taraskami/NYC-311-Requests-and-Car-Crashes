@@ -6,23 +6,23 @@ DROP TABLE IF EXISTS zipcode;
 DROP TABLE IF EXISTS victim_zipcode;
 
 CREATE TEMPORARY TABLE requests_tmp (
-    id VARCHAR NOT NULL,
+    id INT NOT NULL,
     open_date TIMESTAMP NOT NULL,
     close_date TIMESTAMP,
     complaint_type VARCHAR NOT NULL,
     descriptor VARCHAR NOT NULL,
-    location_type VARCHAR NOT NULL,
-    zip INT DEFAULT NULL,
-    address VARCHAR NOT NULL,
-    street VARCHAR NOT NULL,
-    crossstreet1 VARCHAR NOT NULL,
-    crossstreet2 VARCHAR NOT NULL,
-    intersection1 VARCHAR NOT NULL,
-    intersection2 VARCHAR NOT NULL,
-    address_type VARCHAR NOT NULL,
-    city VARCHAR NOT NULL,
-    landmark VARCHAR NOT NULL,
-    status VARCHAR NOT NULL,
+    location_type VARCHAR,
+    zip INT,
+    address VARCHAR,
+    street VARCHAR,
+    crossstreet1 VARCHAR,
+    crossstreet2 VARCHAR,
+    intersection1 VARCHAR,
+    intersection2 VARCHAR,
+    address_type VARCHAR,
+    city VARCHAR,
+    landmark VARCHAR,
+    status VARCHAR,
     boro VARCHAR NOT NULL,
     x_coord INT,
     y_coord INT,
@@ -64,43 +64,32 @@ CREATE TEMPORARY TABLE crashes_tmp (
     vehicle_type5 VARCHAR
 );
 
-CREATE TABLE victim_service_calls(
-    call_date DATE NOT NULL,
-    call_time TIME NOT NULL,
-    street_name VARCHAR,
-    cross_street_name VARCHAR,
-    persons_injured INT NOT NULL,
-    persons_killed INT NOT NULL,
-    PRIMARY KEY(call_date, call_time, street_name)
-);
+-- CREATE TABLE victim_service_calls(
+--     call_date DATE NOT NULL,
+--     call_time TIME NOT NULL,
+--     street_name VARCHAR,
+--     cross_street_name VARCHAR,
+--     persons_injured INT NOT NULL,
+--     persons_killed INT NOT NULL,
+--     PRIMARY KEY(call_date, call_time, street_name)
+-- );
 
-CREATE TABLE collision_injuries (
-    collision_time DATE NOT NULL,
-    street_name VARCHAR,
-    persons_injured INT NOT NULL,
-    persons_killed INT NOT NULL,
-    factor_vehicle1 VARCHAR NOT NULL,
-    factor_vehicle2 VARCHAR,
-    vehicle1_type VARCHAR NOT NULL,
-    vehicle2_type VARCHAR,
-    PRIMARY KEY(collision_time, street_name)
-);
 
 CREATE TABLE service_calls (
-    call_time DATE NOT NULL,
-    street_name VARCHAR ,
+    open_time DATE NOT NULL,
+    close_time DATE,
+    street_name VARCHAR,
     complaint_type VARCHAR NOT NULL,
     descriptor VARCHAR NOT NULL,
     location_type VARCHAR,
-    resolution VARCHAR NOT NULL,
-    channel_type VARCHAR NOT NULL,
     call_status VARCHAR NOT NULL,
-    PRIMARY KEY(call_time, street_name)
+    PRIMARY KEY(open_time, street_name)
 );
 
 CREATE TABLE borough_vehicle (
     collision_id INT NOT NULL,
     collision_date DATE,
+    collision_time TIME,
     borough VARCHAR(15),
     vehicle1_type VARCHAR NOT NULL,
     vehicle2_type VARCHAR,
@@ -110,18 +99,19 @@ CREATE TABLE borough_vehicle (
 );
 
 CREATE TABLE zipcode (
+    request_id INT NOT NULL,
     zipcode VARCHAR(5) NOT NULL,
     borough VARCHAR(15) NOT NULL,
-    longitude VARCHAR NOT NULL,
-    latitude VARCHAR NOT NULL,
-    _location VARCHAR NOT NULL,
+    longitude VARCHAR,
+    latitude VARCHAR,
     complaint_type VARCHAR NOT NULL,
-    PRIMARY KEY(longitude, latitude)
+    PRIMARY KEY(request_id)
 );
 
 CREATE TABLE victim_zipcode (
     collision_id INT NOT NULL,
     collision_date DATE NOT NULL,
+    collision_time TIME NOT NULL,
     zipcode VARCHAR(5) NOT NULL,
     address_type VARCHAR,
     persons_killed INT NOT NULL,
