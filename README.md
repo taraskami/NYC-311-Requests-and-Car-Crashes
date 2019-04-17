@@ -8,4 +8,15 @@ psql -U postgres
 \q
 ```
 
-To run: `python load_data.py`
+To run:
+`python load_data.py`
+
+To check tables if they exist:
+```
+psql -U requests_and_crashes
+\db
+\du
+\lt
+SELECT * FROM <insert table name here>;
+\q
+```

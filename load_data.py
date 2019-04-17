@@ -8,11 +8,11 @@ cur.execute(open("requests_and_crashes.sql", "r").read())
 
 print "Populating data..."
 
-with open('311_Service_Requests_from_2010_to_Present.csv', 'r') as f:
+with open('data/311_Service_Requests_from_2010_to_Present.csv', 'r') as f:
     f.readline()
     cur.copy_from(f, 'requests_tmp', sep=',')
 
-with open('NYPD_Motor_Vehicle_Collisions.csv', 'r') as f:
+with open('data/NYPD_Motor_Vehicle_Collisions.csv', 'r') as f:
     f.readline()
     cur.copy_from(f, 'crashes_tmp', sep=',')
 
