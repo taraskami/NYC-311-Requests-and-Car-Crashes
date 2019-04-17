@@ -1,9 +1,4 @@
--- DROP TABLE IF EXISTS victim_service_calls;
--- DROP TABLE IF EXISTS collision_injuries;
--- DROP TABLE IF EXISTS service_calls;
--- DROP TABLE IF EXISTS borough_vehicle;
--- DROP TABLE IF EXISTS zipcode;
--- DROP TABLE IF EXISTS victim_zipcode;
+-- Creating tables that will be populated by load_data_to_tables, called by load_data.py
 
 DROP TABLE IF EXISTS crashes;
 DROP TABLE IF EXISTS crashes_location;
@@ -70,61 +65,6 @@ CREATE TEMPORARY TABLE crashes_tmp (
     vehicle_type4 VARCHAR,
     vehicle_type5 VARCHAR
 );
-
--- CREATE TABLE victim_service_calls(
---     call_date DATE NOT NULL,
---     call_time TIME NOT NULL,
---     street_name VARCHAR,
---     cross_street_name VARCHAR,
---     persons_injured INT NOT NULL,
---     persons_killed INT NOT NULL,
---     PRIMARY KEY(call_date, call_time, street_name)
--- );
-
-
--- CREATE TABLE service_calls (
---     open_time DATE NOT NULL,
---     close_time DATE,
---     street_name VARCHAR,
---     complaint_type VARCHAR NOT NULL,
---     descriptor VARCHAR NOT NULL,
---     location_type VARCHAR,
---     call_status VARCHAR NOT NULL,
---     PRIMARY KEY(open_time, street_name)
--- );
-
--- CREATE TABLE borough_vehicle (
---     collision_id INT NOT NULL,
---     collision_date DATE,
---     collision_time TIME,
---     borough VARCHAR(15),
---     vehicle1_type VARCHAR NOT NULL,
---     vehicle2_type VARCHAR,
---     factor_vehicle1 VARCHAR NOT NULL,
---     factor_vehicle2 VARCHAR,
---     PRIMARY KEY(collision_id)
--- );
-
--- CREATE TABLE zipcode (
---     request_id INT NOT NULL,
---     zipcode VARCHAR(5) NOT NULL,
---     borough VARCHAR(15) NOT NULL,
---     longitude VARCHAR,
---     latitude VARCHAR,
---     complaint_type VARCHAR NOT NULL,
---     PRIMARY KEY(request_id)
--- );
-
--- CREATE TABLE victim_zipcode (
---     collision_id INT NOT NULL,
---     collision_date DATE NOT NULL,
---     collision_time TIME NOT NULL,
---     zipcode VARCHAR(5) NOT NULL,
---     address_type VARCHAR,
---     persons_killed INT NOT NULL,
---     persons_injured INT NOT NULL,
---     PRIMARY KEY(collision_id)
--- );
 
 CREATE TABLE crashes(
     id INT NOT NULL,
