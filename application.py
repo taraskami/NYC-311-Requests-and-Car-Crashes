@@ -28,5 +28,5 @@ if not admin_mode:
         print "(Tips: you may have to try variations of spellings for street types (i.e. parkway and pkwy)"
         street_name = input()
     else:
-        print "what up 🅱"
+        print "..."
     
