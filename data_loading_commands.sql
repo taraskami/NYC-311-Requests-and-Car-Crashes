@@ -1,3 +1,0 @@
--- This is what load_data.py will need to do
--- I'm just using this to brainstorm what commands it'll need to exectue via functions
--- This shouldn't be run on its own
