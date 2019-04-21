@@ -68,7 +68,16 @@ while (True):
                 result = query_fn4(location_name, type_index)
                 print str(result) + " deaths in this borough."
                 continue
-            
+
+        if topic_index == 6:
+            print "[Crashes on Street in a Period of Time]"
+            start_time = raw_input("Input the start time in the form (HH:MM:SS): ")
+            end_time = raw_input("Input the end time in the form (HH:MM:SS): ")
+            street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
+            result = query_fn6(start_time, end_time, street_name)
+            print str(result) + " crashes on this street between these provided hours." + "\n"
+
+        
         if topic_index > 10 or topic_index < 1:
             print "Invalid\n"
         
