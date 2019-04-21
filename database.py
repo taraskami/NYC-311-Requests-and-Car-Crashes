@@ -15,8 +15,12 @@ def query_fn2(street_name, crossstreet_name):
         str = str + "A possible cause is " + row[0] + " (and) " + row[1] + "\n"
     return str
 
-def query_fn3():
-    return
+def query_fn3(hw_name):
+    cur.execute("SELECT DISTINCT(complaints) FROM (SELECT requests_highways.id, requests_highways.bridge_highway_name, requests.id, requests.complaint_type AS complaints FROM requests_highways, requests WHERE requests_highways.id = requests.id AND requests_highways.bridge_highway_name = 'Belt Pkwy' GROUP BY requests_highways.id, requests_highways.bridge_highway_name, requests.id, requests.complaint_type) as var", (hw_name))
+    str = ""
+    for row in cur.fetchall():
+        str = str + "-" + row[0] + "\n"
+    return str
 
 def query_fn4(location_name, type_index):
     num = 0;

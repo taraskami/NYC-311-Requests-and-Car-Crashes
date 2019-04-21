@@ -14,11 +14,12 @@ if run_sql:
     import load_data #Creates tables and populates them.
 from database import *
 print "\n" + "\n" + "Welcome to the NYC 311 Requests and Car Crashes application."
+
 while (True):
     if not admin_mode:
         print "What would you like to examine?"
-        print """1: [Street and Number of Crashes]    2: [Potential Causes of Crashes]
-3: [Crashes on the Highway]           4: [Crash Deaths per Street, ZIP, or Borough]
+        print """1: [Street and Number of Crashes]     2: [Potential Causes of Crashes]
+3: [Incident on Specific Highway]     4: [Crash Deaths per Street, ZIP, or Borough]
 5: [Multi-Car Crashes]                6: [Crashes on Street in a Period of Time]
 7: [Potential Crashes linked to Complaint Type]
 8: [Potential Crashes linked to Complaint Reason]
@@ -31,7 +32,7 @@ while (True):
             print "Specify a borough (Optional, may leave blank)"
             boro_name = raw_input()
             result = query_fn1(street_name, boro_name)
-            print str(result) + " crashes on this street."
+            print str(result) + " crashes on this street." + "\n"
             
         if topic_index == 2:
             print "[Potential Causes of Crashes]"
@@ -39,6 +40,12 @@ while (True):
             crossstreet_name = raw_input("Input another cross street: ")
             result = query_fn2(street_name, crossstreet_name)
             print "Cause of Crash: " + "\n" + str(result)
+
+        if topic_index == 3:
+            print "[Incident on Specific Highway]"
+            hw_name = raw_input("Input the highway you'd like to examine: ")
+            result = query_fn3(hw_name)
+            print "Incident includes: " + "\n" + str(result) 
             
         if topic_index == 4:
             print "[Crash Deaths per Street, ZIP, or Borough]"
@@ -62,6 +69,6 @@ while (True):
                 print str(result) + " deaths in this borough."
                 continue
             
-        else:
-            print "Invalid"
+        if topic_index > 10 or topic_index < 1:
+            print "Invalid\n"
         
