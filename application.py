@@ -24,7 +24,7 @@ while (True):
     8: [Potential Crashes linked to Complaint Reason]
     9: [All Crashes]                      10: [All Requests]"""
 
-        topic_index = input()
+        topic_index = input("Menu Option: ")
         if topic_index == 1:
             print "[Street and Number of Crashes]"
             street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy)")
@@ -32,5 +32,12 @@ while (True):
             boro_name = raw_input()
             result = query_fn1(street_name, boro_name)
             print str(result) + " crashes on this street."
+        if topic_index == 2:
+            print "[Potential Causes of Crashes]"
+            street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
+            crossstreet_name = raw_input("Input another cross street: ")
+            result = query_fn2(street_name, crossstreet_name)
+            print "Cause of Crash: " + "\n" + str(result)
         else:
             print "Invalid"
+        

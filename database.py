@@ -8,8 +8,12 @@ def query_fn1(street_name, boro_name):
     result = cur.fetchall()
     return result[0][0]
 
-def query_fn2():
-    return
+def query_fn2(street_name, crossstreet_name):
+    cur.execute("SELECT cause1, cause2 FROM (SELECT crashes.id, crashes.contrib_factor1 AS cause1, crashes.contrib_factor2 as cause2, crashes_location.street, crashes_location.crossstreet, crashes_location.id FROM crashes, crashes_location WHERE crashes.id = crashes_location.id GROUP BY crashes.id, crashes.contrib_factor1, crashes.contrib_factor2, crashes_location.street, crashes_location.crossstreet, crashes_location.id) AS var WHERE var.street = %s OR var.crossstreet = %s", (street_name, crossstreet_name, ))
+    str = ""
+    for row in cur.fetchall():
+        str = str + "A possible cause is " + row[0] + " (and) " + row[1] + "\n"
+    return str
 
 def query_fn3():
     return
