@@ -13,16 +13,16 @@ for i in range(len(sys.argv)):
 if run_sql:
     import load_data #Creates tables and populates them.
 from database import *
-print "Welcome to the NYC 311 Requests and Car Crashes application."
+print "\n" + "\n" + "Welcome to the NYC 311 Requests and Car Crashes application."
 while (True):
     if not admin_mode:
         print "What would you like to examine?"
         print """1: [Street and Number of Crashes]    2: [Potential Causes of Crashes]
-    3: [Crashes on the Highway]           4: [Crash Deaths per Street, ZIP, or Borough]
-    5: [Multi-Car Crashes]                6: [Crashes on Street in a Period of Time]
-    7: [Potential Crashes linked to Complaint Type]
-    8: [Potential Crashes linked to Complaint Reason]
-    9: [All Crashes]                      10: [All Requests]"""
+3: [Crashes on the Highway]           4: [Crash Deaths per Street, ZIP, or Borough]
+5: [Multi-Car Crashes]                6: [Crashes on Street in a Period of Time]
+7: [Potential Crashes linked to Complaint Type]
+8: [Potential Crashes linked to Complaint Reason]
+9: [All Crashes]                      10: [All Requests]"""
 
         topic_index = input("Menu Option: ")
         if topic_index == 1:
