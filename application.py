@@ -27,17 +27,41 @@ while (True):
         topic_index = input("Menu Option: ")
         if topic_index == 1:
             print "[Street and Number of Crashes]"
-            street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy)")
+            street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
             print "Specify a borough (Optional, may leave blank)"
             boro_name = raw_input()
             result = query_fn1(street_name, boro_name)
             print str(result) + " crashes on this street."
+            
         if topic_index == 2:
             print "[Potential Causes of Crashes]"
             street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
             crossstreet_name = raw_input("Input another cross street: ")
             result = query_fn2(street_name, crossstreet_name)
             print "Cause of Crash: " + "\n" + str(result)
+            
+        if topic_index == 4:
+            print "[Crash Deaths per Street, ZIP, or Borough]"
+            print """1: [Street]
+2: [ZIP]
+3: [Borough]"""
+            type_index = input("Input Option: ")
+            if type_index == 1:
+                location_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
+                result = query_fn4(location_name, type_index)
+                print str(result) + " deaths on this street."
+                continue
+            if type_index == 2:
+                location_name = raw_input("Input the ZIP you'd like to examine: ")
+                result = query_fn4(location_name, type_index)
+                print str(result) + " deaths in this ZIP."
+                continue
+            if type_index == 3:
+                location_name = raw_input("Input the borough you'd like to examine: ")
+                result = query_fn4(location_name, type_index)
+                print str(result) + " deaths in this borough."
+                continue
+            
         else:
             print "Invalid"
         

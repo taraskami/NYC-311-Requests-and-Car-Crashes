@@ -18,8 +18,24 @@ def query_fn2(street_name, crossstreet_name):
 def query_fn3():
     return
 
-def query_fn4():
-    return
+def query_fn4(location_name, type_index):
+    num = 0;
+    if(type_index == 1):
+        cur.execute("SELECT DISTINCT(num), killed FROM (SELECT crashes_victims.persons_killed AS killed, crashes_victims.id AS num, crashes_location.id, crashes_location.street, crashes_location.crossstreet FROM crashes_location, crashes_victims WHERE crashes_victims.id = crashes_location.id AND (crashes_location.street = %s OR crashes_location.crossstreet = %s) GROUP BY crashes_victims.persons_killed, crashes_victims.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) as var", (location_name, location_name, ))
+        for row in cur.fetchall():
+            num += row[1]
+        return num
+    if(type_index == 2):
+        cur.execute("SELECT DISTINCT(num), killed FROM (SELECT crashes_victims.persons_killed AS killed, crashes_victims.id AS num, crashes_location.id, crashes_location.zip FROM crashes_location, crashes_victims WHERE crashes_victims.id = crashes_location.id AND crashes_location.zip = %s GROUP BY crashes_victims.persons_killed, crashes_victims.id, crashes_location.id, crashes_location.zip) as var", (location_name, ))
+        for row in cur.fetchall():
+            num += row[1]
+        return num
+    if(type_index == 3):
+        cur.execute("SELECT DISTINCT(num), killed FROM (SELECT crashes_victims.persons_killed AS killed, crashes_victims.id AS num, crashes_location.id, crashes_location.boro FROM crashes_location, crashes_victims WHERE crashes_victims.id = crashes_location.id AND crashes_location.boro = %s GROUP BY crashes_victims.persons_killed, crashes_victims.id, crashes_location.id, crashes_location.boro) as var", (location_name, ))
+        for row in cur.fetchall():
+            num += row[1]
+        return num
+    return -1
 
 def query_fn5():
     return
