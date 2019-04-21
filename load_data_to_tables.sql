@@ -10,7 +10,7 @@ FROM crashes_tmp
 ON CONFLICT(id)
 DO NOTHING;
 
-INSERT INTO crashes_victims(id, persons_killed, persons_injured)
+INSERT INTO crashes_victims(id, persons_injured, persons_killed)
 SELECT crashes_tmp.id, crashes_tmp.persons_injured + crashes_tmp.peds_injured + crashes_tmp.cyclists_injured + crashes_tmp.motorists_injured, crashes_tmp.persons_killed + crashes_tmp.peds_killed + crashes_tmp.cyclists_killed + crashes_tmp.motorists_killed
 FROM crashes_tmp
 ON CONFLICT(id)
