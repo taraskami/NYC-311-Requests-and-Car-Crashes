@@ -49,11 +49,19 @@ def query_fn6(start_time, end_time, street_name):
     result = cur.fetchall()
     return result[0][0]
 
-def query_fn7():
-    return
+def query_fn7(start_date, end_date, complaint):
+    cur.execute("SELECT location, crosslocation FROM (SELECT requests.open_date, requests.close_date, requests.complaint_type, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street AS location, crashes_location.crossstreet AS crosslocation FROM requests, crashes_location, crashes WHERE (DATE(crashes.crash_date) BETWEEN DATE(%s) AND DATE(%s)) AND (DATE(crashes.crash_date) BETWEEN DATE(requests.open_date) AND DATE(requests.close_date)) AND requests.complaint_type = %s AND crashes_location.id = crashes.id GROUP BY requests.open_date, requests.close_date, requests.complaint_type, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) AS var LIMIT 10", (start_date, end_date, complaint, ))
+    str = ""
+    for row in cur.fetchall():
+        str = str + "At " + row[0] + " (and) " + row[1] +  "\n"
+    return str
 
-def query_fn8():
-    return
+def query_fn8(start_date, end_date, descriptor):
+    cur.execute("SELECT location, crosslocation FROM (SELECT requests.open_date, requests.close_date, requests.descriptor, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street AS location, crashes_location.crossstreet AS crosslocation FROM requests, crashes_location, crashes WHERE (DATE(crashes.crash_date) BETWEEN DATE(%s) AND DATE(%s)) AND (DATE(crashes.crash_date) BETWEEN DATE(requests.open_date) AND DATE(requests.close_date)) AND requests.descriptor = %s AND crashes_location.id = crashes.id GROUP BY requests.open_date, requests.close_date, requests.descriptor, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) AS var LIMIT 10", (start_date, end_date, descriptor, ))
+    str = ""
+    for row in cur.fetchall():
+        str = str + "At " + row[0] + " (and) " + row[1] +  "\n"
+    return str
 
 def query_fn9():
     return

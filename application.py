@@ -77,7 +77,22 @@ while (True):
             result = query_fn6(start_time, end_time, street_name)
             print str(result) + " crashes on this street between these provided hours." + "\n"
 
-        
+        if topic_index == 7:
+            print "[Potential Crashes linked to Complaint Type]"
+            start_date = raw_input("Input the start date in the form (YYYY-MM-DD): ")
+            end_date = raw_input("Input the end date in the form (YYYY-MM-DD): ")
+            complaint = raw_input("Input the complaint type: ")
+            result = query_fn7(start_date, end_date, complaint)
+            print "Possible incident includes: " + "\n" + str(result)
+
+        if topic_index == 8:
+            print "[Potential Crashes linked to Reason Type]"
+            start_date = raw_input("Input the start date in the form (YYYY-MM-DD): ")
+            end_date = raw_input("Input the end date in the form (YYYY-MM-DD): ")
+            complaint = raw_input("Input the reason type: ")
+            result = query_fn8(start_date, end_date, complaint)
+            print "Possible incident includes: " + "\n" + str(result)
+            
         if topic_index > 10 or topic_index < 1:
             print "Invalid\n"
         
