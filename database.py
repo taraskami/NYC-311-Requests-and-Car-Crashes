@@ -5,13 +5,12 @@ cur = conn.cursor()
 # Functions to query data
 def query_fn0(boro_name):
     cur.execute("SELECT DISTINCT street FROM crashes_location WHERE boro = %s", (boro_name, ))
-    result = ""
+    results = []
     count = 0
     for row in cur.fetchall():
-        result = result + row[0] + "\n"
+        results.append(row[0])
         count += 1
-    result = result + str(count) + " streets in this borough."
-    return result
+    return results
 
 def query_fn1(street_name, boro_name):
     cur.execute("SELECT COUNT(*) FROM crashes_location WHERE street = %s OR crossstreet = %s", (street_name, street_name, ))

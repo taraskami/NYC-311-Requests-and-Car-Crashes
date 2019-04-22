@@ -24,15 +24,44 @@ while (True):
 5: [Number of Crashes vs. Requests in a ZipCode by Date]     6: [Crashes on Street in a Period of Time]
 7: [Potential Crashes linked to Complaint Type]
 8: [Potential Crashes linked to Complaint Reason]
-9: [Crashes Info By ID]               10: [Requests Info By ID]"""
+9: [Crashes Info By ID]               10: [Requests Info By ID]
+11: Quit"""
 
         topic_index = input("Menu Option: ")
         if topic_index == 0:
             print "[Street Lookup]"
             print "Manhattan, Brooklyn, Queens, Bronx, Staten Island"
             boro_name = raw_input("Enter the borough you'd like to search within:")
-            result = query_fn0(boro_name)
-            print str(result)
+            results = query_fn0(boro_name.upper())
+            results = sorted(results)
+            i = 0
+            i_max = 99
+            end_of_page = False
+            while (not end_of_page):
+                for j in range(i, i_max + 1):
+                    if j < len(results):
+                        print results[j]
+                    else:
+                        end_of_page = True
+                        i_max = j
+                        break
+                print "---------------"
+                print "Showing streets " + str(i+1) + "-" + str(i_max + 1)
+                if (end_of_page):
+                    print "Enter: Quit lookup"
+                    lookup_cmd = raw_input()
+                    break
+                else:
+                    print "N: Next Page\nEnter: Quit lookup"
+                    lookup_cmd = raw_input()
+                    if (lookup_cmd.upper() == "N"):
+                        i += 100
+                        i_max += 100
+                    else:
+                        break
+
+
+        
         if topic_index == 1:
             print "[Street and Number of Crashes]"
             street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
@@ -115,8 +144,9 @@ while (True):
             id = raw_input("Input ID: ")
             result = query_fn10(id)
             print str(result)
-
-            
-        if topic_index > 10 or topic_index < 1:
-            print "Invalid\n"
         
+        if topic_index == 11:
+            break
+            
+        if topic_index > 11 or topic_index < 0:
+            print "Invalid\n"
