@@ -81,7 +81,7 @@ while (True):
             end_time = raw_input("Input the end time in the form (HH:MM:SS): ")
             street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
             result = query_fn6(start_time, end_time, street_name)
-            print str(result) + " crashes on this street between these provided hours." + "\n"
+            print str(result) + " crashes on this street between these provided hours over the course of this study." + "\n"
 
         if topic_index == 7:
             print "[Potential Crashes linked to Complaint Type]"
