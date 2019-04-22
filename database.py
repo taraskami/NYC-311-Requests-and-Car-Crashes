@@ -63,8 +63,26 @@ def query_fn8(start_date, end_date, descriptor):
         str = str + "At " + row[0] + " (and) " + row[1] +  "\n"
     return str
 
-def query_fn9():
-    return
+def query_fn9(id):
+    cur.execute("SELECT * FROM crashes NATURAL JOIN crashes_location WHERE crashes.id = %s", (id, ))
+    result = cur.fetchall()
+    var = ("Date: " + str(result[0][1]) + "\n"
+              "Time: " + str(result[0][2]) + "\n"
+              "Cause 1: " + str(result[0][3]) + "\n"
+              "Cause 2: " + str(result[0][4]) + "\n"
+              "Vehicle 1: " + str(result[0][5]) + "\n"
+              "Vehicle 2: " + str(result[0][6]) + "\n"
+              "Street: " + str(result[0][11]) + "\n"
+              "Crossstreet: " + str(result[0][12]) + "\n")
+    return var
 
-def query_fn10():
-    return
+def query_fn10(id):
+    cur.execute("SELECT * FROM requests NATURAL JOIN requests_location WHERE requests.id = %s", (id, ))
+    result = cur.fetchall()
+    var = ("Open Date: " + str(result[0][1]) + "\n"
+           "Close Date: " + str(result[0][2]) + "\n"
+           "Complaint Type: " + str(result[0][3]) + "\n"
+           "Descriptor: " + str(result[0][4]) + "\n"
+           "Street: " + str(result[0][17]) + "\n"
+           "Crossstreet: " + str(result[0][18]) + "\n")
+    return var

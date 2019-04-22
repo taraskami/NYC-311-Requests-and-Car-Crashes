@@ -23,7 +23,7 @@ while (True):
 5: [Multi-Car Crashes]                6: [Crashes on Street in a Period of Time]
 7: [Potential Crashes linked to Complaint Type]
 8: [Potential Crashes linked to Complaint Reason]
-9: [All Crashes]                      10: [All Requests]"""
+9: [Crashes Info By ID]               10: [Requests Info By ID]"""
 
         topic_index = input("Menu Option: ")
         if topic_index == 1:
@@ -92,6 +92,17 @@ while (True):
             complaint = raw_input("Input the reason type: ")
             result = query_fn8(start_date, end_date, complaint)
             print "Possible incident includes: " + "\n" + str(result)
+
+        if topic_index == 9:
+            id = raw_input("Input ID: ")
+            result = query_fn9(id)
+            print str(result)
+
+        if topic_index == 10:
+            id = raw_input("Input ID: ")
+            result = query_fn10(id)
+            print str(result)
+
             
         if topic_index > 10 or topic_index < 1:
             print "Invalid\n"
