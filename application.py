@@ -18,7 +18,8 @@ print "\n" + "\n" + "Welcome to the NYC 311 Requests and Car Crashes application
 while (True):
     if not admin_mode:
         print "What would you like to examine?"
-        print """1: [Street and Number of Crashes]     2: [Potential Causes of Crashes]
+        print """0: [Street Lookup]
+1: [Street and Number of Crashes]     2: [Potential Causes of Crashes]
 3: [Incident on Specific Highway]     4: [Crash Deaths per Street, ZIP, or Borough]
 5: [Number of Crashes vs. Requests in a ZipCode by Date]     6: [Crashes on Street in a Period of Time]
 7: [Potential Crashes linked to Complaint Type]
@@ -26,6 +27,12 @@ while (True):
 9: [Crashes Info By ID]               10: [Requests Info By ID]"""
 
         topic_index = input("Menu Option: ")
+        if topic_index == 0:
+            print "[Street Lookup]"
+            print "Manhattan, Brooklyn, Queens, Bronx, Staten Island"
+            boro_name = raw_input("Enter the borough you'd like to search within:")
+            result = query_fn0(boro_name)
+            print str(result)
         if topic_index == 1:
             print "[Street and Number of Crashes]"
             street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
