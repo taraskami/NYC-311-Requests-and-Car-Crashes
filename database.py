@@ -41,8 +41,12 @@ def query_fn4(location_name, type_index):
         return num
     return -1
 
-def query_fn5():
-    return
+def query_fn5(zipcode):
+    st = ""
+    cur.execute("SELECT crash_date, count(DISTINCT crashes_id), count(DISTINCT requests_id) FROM (SELECT crashes.id AS crashes_id, crash_date FROM crashes, crashes_location WHERE crashes.id = crashes_location.id AND crashes_location.zip = %s GROUP BY crashes.id ) as a1, (SELECT requests.id AS requests_id, open_date FROM requests, requests_location WHERE requests.id = requests_location.id AND requests_location.zip = %s GROUP BY requests.id) as a2 GROUP BY crash_date", (zipcode, zipcode, ))
+    for row in cur.fetchall():
+        st = st + "-" + str(row[0]) + " " + str(row[1]) + " " + str(row[2]) + " \n"
+    return st
 
 def query_fn6(start_time, end_time, street_name):
     cur.execute("SELECT count(DISTINCT num) FROM (SELECT crashes.crash_time, crashes.id AS num, crashes_location.id, crashes_location.street, crashes_location.crossstreet FROM crashes_location, crashes WHERE crashes_location.id = crashes.id AND crashes.crash_time >= '09:00:00' AND crashes.crash_time <= '10:00:00' AND (crashes_location.street = 'ALBEMARLE ROAD' OR crashes_location.crossstreet = 'ALBEMARLE ROAD') GROUP BY crashes.crash_time, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) as var", (start_time, end_time, street_name, street_name, ))
@@ -73,7 +77,7 @@ def query_fn9(id):
               "Vehicle 1: " + str(result[0][5]) + "\n"
               "Vehicle 2: " + str(result[0][6]) + "\n"
               "Street: " + str(result[0][11]) + "\n"
-              "Crossstreet: " + str(result[0][12]) + "\n")
+              "Cross street: " + str(result[0][12]) + "\n")
     return var
 
 def query_fn10(id):
@@ -84,5 +88,5 @@ def query_fn10(id):
            "Complaint Type: " + str(result[0][3]) + "\n"
            "Descriptor: " + str(result[0][4]) + "\n"
            "Street: " + str(result[0][17]) + "\n"
-           "Crossstreet: " + str(result[0][18]) + "\n")
+           "Cross street: " + str(result[0][18]) + "\n")
     return var

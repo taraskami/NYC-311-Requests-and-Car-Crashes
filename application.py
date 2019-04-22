@@ -20,7 +20,7 @@ while (True):
         print "What would you like to examine?"
         print """1: [Street and Number of Crashes]     2: [Potential Causes of Crashes]
 3: [Incident on Specific Highway]     4: [Crash Deaths per Street, ZIP, or Borough]
-5: [Multi-Car Crashes]                6: [Crashes on Street in a Period of Time]
+5: [Number of Crashes vs. Requests in a ZipCode by Date]     6: [Crashes on Street in a Period of Time]
 7: [Potential Crashes linked to Complaint Type]
 8: [Potential Crashes linked to Complaint Reason]
 9: [Crashes Info By ID]               10: [Requests Info By ID]"""
@@ -68,6 +68,12 @@ while (True):
                 result = query_fn4(location_name, type_index)
                 print str(result) + " deaths in this borough."
                 continue
+        if topic_index == 5:
+            print "[Number of Crashes vs. Number of Requests in a ZipCode by Date]"
+            zipcode = raw_input("Input a zipcode: ")
+            result = query_fn5(zipcode)
+            print str(result)
+
 
         if topic_index == 6:
             print "[Crashes on Street in a Period of Time]"
