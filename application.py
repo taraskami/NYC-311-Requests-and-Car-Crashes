@@ -31,7 +31,7 @@ while (True):
         if topic_index == 0:
             print "[Street Lookup]"
             print "Manhattan, Brooklyn, Queens, Bronx, Staten Island"
-            boro_name = raw_input("Enter the borough you'd like to search within:")
+            boro_name = raw_input("Enter the borough you'd like to search within: ")
             results = query_fn0(boro_name.upper())
             results = sorted(results)
             i = 0
