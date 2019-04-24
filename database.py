@@ -60,10 +60,10 @@ def query_fn5(zipcode):
     # cur.execute("SELECT crash_date, count(DISTINCT crashes_id), count(DISTINCT requests_id) FROM (SELECT crashes.id AS crashes_id, crash_date FROM crashes, crashes_location WHERE crashes.id = crashes_location.id AND crashes_location.zip = %s GROUP BY crashes.id ) as a1, (SELECT requests.id AS requests_id, open_date FROM requests, requests_location WHERE requests.id = requests_location.id AND requests_location.zip = %s GROUP BY requests.id) as a2 GROUP BY crash_date", (zipcode, zipcode, ))
     cur.execute("SELECT DISTINCT(crash_date), num_crashes, num_requests FROM (SELECT DATE(crash_date) as crash_date, count(DISTINCT crashes.id) as num_crashes FROM crashes, crashes_location WHERE crashes.id = crashes_location.id AND crashes_location.zip = %s GROUP BY crash_date) as a1 NATURAL JOIN (SELECT DATE(open_date) as open_date, count(DISTINCT requests.id) as num_requests FROM requests, requests_location WHERE requests.id = requests_location.id AND requests_location.zip = %s GROUP BY open_date) as a2", (zipcode, zipcode, ))
     for row in cur.fetchall():
-        st = st + "-" + str(row[0]) + " " + str(row[1]) + " " + str(row[2]) + " \n"
+        st = st + "-" + str(row[0]) + " Crashes: " + str(row[1]) + " Requests: " + str(row[2]) + " \n"
         crashes= crashes + row[1]
         requests= requests + row[2]
-    st = st + "crashes: " + str(crashes) + " requests: " + str(requests)
+    st = st + "Crashes: " + str(crashes) + " Requests: " + str(requests)
     return st
 
 def query_fn6(start_time, end_time, street_name):
