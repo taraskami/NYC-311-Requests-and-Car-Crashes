@@ -77,7 +77,7 @@ def query_fn5(zipcode):
     return st
 
 def query_fn6(start_time, end_time, street_name):
-    cur.execute("SELECT count(DISTINCT num) FROM (SELECT crashes.crash_time, crashes.id AS num, crashes_location.id, crashes_location.street, crashes_location.crossstreet FROM crashes_location, crashes WHERE crashes_location.id = crashes.id AND crashes.crash_time >= '09:00:00' AND crashes.crash_time <= '10:00:00' AND (crashes_location.street = 'ALBEMARLE ROAD' OR crashes_location.crossstreet = 'ALBEMARLE ROAD') GROUP BY crashes.crash_time, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) as var", (start_time, end_time, street_name, street_name, ))
+    cur.execute("SELECT count(DISTINCT num) FROM (SELECT crashes.crash_time, crashes.id AS num, crashes_location.id, crashes_location.street, crashes_location.crossstreet FROM crashes_location, crashes WHERE crashes_location.id = crashes.id AND crashes.crash_time >= %s AND crashes.crash_time <= %s AND (crashes_location.street = %s OR crashes_location.crossstreet = %s) GROUP BY crashes.crash_time, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) as var", (start_time, end_time, street_name, street_name ))
     result = cur.fetchall()
     return result[0][0]
 
