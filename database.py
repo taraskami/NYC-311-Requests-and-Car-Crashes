@@ -3,16 +3,28 @@ conn = psycopg2.connect("host=localhost dbname=requests_and_crashes user=request
 cur = conn.cursor()
 
 # Functions to query data
+def query_fn0(boro_name):
+    cur.execute("SELECT DISTINCT street FROM crashes_location WHERE boro = %s", (boro_name, ))
+    results = []
+    count = 0
+    for row in cur.fetchall():
+        results.append(row[0])
+        count += 1
+    return results
+
 def query_fn1(street_name, boro_name):
     cur.execute("SELECT COUNT(*) FROM crashes_location WHERE street = %s OR crossstreet = %s", (street_name, street_name, ))
     result = cur.fetchall()
     return result[0][0]
 
 def query_fn2(street_name, crossstreet_name):
-    cur.execute("SELECT cause1, cause2 FROM (SELECT crashes.id, crashes.contrib_factor1 AS cause1, crashes.contrib_factor2 as cause2, crashes_location.street, crashes_location.crossstreet, crashes_location.id FROM crashes, crashes_location WHERE crashes.id = crashes_location.id GROUP BY crashes.id, crashes.contrib_factor1, crashes.contrib_factor2, crashes_location.street, crashes_location.crossstreet, crashes_location.id) AS var WHERE var.street = %s OR var.crossstreet = %s", (street_name, crossstreet_name, ))
+    cur.execute("SELECT DISTINCT cause1, cause2 FROM (SELECT crashes.id, crashes.contrib_factor1 AS cause1, crashes.contrib_factor2 as cause2, crashes_location.street, crashes_location.crossstreet, crashes_location.id FROM crashes, crashes_location WHERE crashes.id = crashes_location.id GROUP BY crashes.id, crashes.contrib_factor1, crashes.contrib_factor2, crashes_location.street, crashes_location.crossstreet, crashes_location.id) AS var WHERE var.street = %s OR var.crossstreet = %s", (street_name, crossstreet_name, ))
     str = ""
     for row in cur.fetchall():
-        str = str + "A possible cause is " + row[0] + " (and) " + row[1] + "\n"
+        str = str + "A possible cause is " + row[0]
+        if(row[1] is not ""):
+            str = str + " and " + row[1]
+        str = str + "\n"
     return str
 
 def query_fn3(hw_name):
@@ -41,8 +53,28 @@ def query_fn4(location_name, type_index):
         return num
     return -1
 
-def query_fn5():
-    return
+def query_fn5(zipcode):
+    st = ""
+    crashes = 0
+    requests = 0
+    arr = []
+    cur.execute("SELECT crash_date, open_date, count(DISTINCT crashes_id), count(DISTINCT requests_id) FROM (SELECT crashes.id AS crashes_id, DATE(crash_date) as crash_date FROM crashes, crashes_location WHERE crashes.id = crashes_location.id AND crashes_location.zip = %s GROUP BY crashes.id ) as a1 NATURAL JOIN (SELECT requests.id AS requests_id, DATE(open_date) as open_date FROM requests, requests_location WHERE requests.id = requests_location.id AND requests_location.zip = %s GROUP BY requests.id) as a2 WHERE DATE(crash_date) = DATE(open_date) GROUP BY crash_date, open_date", (zipcode, zipcode, ))
+    for row in cur.fetchall():
+        alreadyIn = False
+        for entry in arr:
+            if entry["date"] == str(row[1]):
+                entry["requests"] = entry["requests"] + row[2]
+                alreadyIn = True
+                break
+        if(not alreadyIn):
+            dic = {"date":str(row[1]), "crashes":row[2], "requests":row[3]}
+            arr.append(dic)
+    for entry in arr:
+        st = st + str(entry["date"]) + " Crashes: " + str(entry["crashes"]) + " Requests: " + str(entry["requests"]) + "\n"
+        crashes = crashes + entry["crashes"]
+        requests = requests+  entry["requests"]
+    st = st + "Total Crashes: " + str(crashes) + " Total Requests: " + str(requests)
+    return st
 
 def query_fn6(start_time, end_time, street_name):
     cur.execute("SELECT count(DISTINCT num) FROM (SELECT crashes.crash_time, crashes.id AS num, crashes_location.id, crashes_location.street, crashes_location.crossstreet FROM crashes_location, crashes WHERE crashes_location.id = crashes.id AND crashes.crash_time >= '09:00:00' AND crashes.crash_time <= '10:00:00' AND (crashes_location.street = 'ALBEMARLE ROAD' OR crashes_location.crossstreet = 'ALBEMARLE ROAD') GROUP BY crashes.crash_time, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) as var", (start_time, end_time, street_name, street_name, ))
@@ -50,14 +82,14 @@ def query_fn6(start_time, end_time, street_name):
     return result[0][0]
 
 def query_fn7(start_date, end_date, complaint):
-    cur.execute("SELECT location, crosslocation FROM (SELECT requests.open_date, requests.close_date, requests.complaint_type, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street AS location, crashes_location.crossstreet AS crosslocation FROM requests, crashes_location, crashes WHERE (DATE(crashes.crash_date) BETWEEN DATE(%s) AND DATE(%s)) AND (DATE(crashes.crash_date) BETWEEN DATE(requests.open_date) AND DATE(requests.close_date)) AND requests.complaint_type = %s AND crashes_location.id = crashes.id GROUP BY requests.open_date, requests.close_date, requests.complaint_type, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) AS var LIMIT 10", (start_date, end_date, complaint, ))
+    cur.execute("SELECT location, crosslocation, COUNT(location) FROM (SELECT requests.open_date, requests.close_date, requests.complaint_type, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street AS location, crashes_location.crossstreet AS crosslocation FROM requests, crashes_location, crashes WHERE (DATE(crashes.crash_date) BETWEEN DATE(%s) AND DATE(%s)) AND (DATE(crashes.crash_date) BETWEEN DATE(requests.open_date) AND DATE(requests.close_date)) AND requests.complaint_type = %s AND crashes_location.id = crashes.id GROUP BY requests.open_date, requests.close_date, requests.complaint_type, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) AS var GROUP BY var.location, var.crosslocation ORDER BY COUNT(location) DESC LIMIT 100", (start_date, end_date, complaint, ))
     str = ""
     for row in cur.fetchall():
         str = str + "At " + row[0] + " (and) " + row[1] +  "\n"
     return str
 
 def query_fn8(start_date, end_date, descriptor):
-    cur.execute("SELECT location, crosslocation FROM (SELECT requests.open_date, requests.close_date, requests.descriptor, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street AS location, crashes_location.crossstreet AS crosslocation FROM requests, crashes_location, crashes WHERE (DATE(crashes.crash_date) BETWEEN DATE(%s) AND DATE(%s)) AND (DATE(crashes.crash_date) BETWEEN DATE(requests.open_date) AND DATE(requests.close_date)) AND requests.descriptor = %s AND crashes_location.id = crashes.id GROUP BY requests.open_date, requests.close_date, requests.descriptor, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) AS var LIMIT 10", (start_date, end_date, descriptor, ))
+    cur.execute("SELECT location, crosslocation, count(location) FROM (SELECT requests.open_date, requests.close_date, requests.descriptor, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street AS location, crashes_location.crossstreet AS crosslocation FROM requests, crashes_location, crashes WHERE (DATE(crashes.crash_date) BETWEEN DATE(%s) AND DATE(%s)) AND (DATE(crashes.crash_date) BETWEEN DATE(requests.open_date) AND DATE(requests.close_date)) AND requests.descriptor = %s AND crashes_location.id = crashes.id GROUP BY requests.open_date, requests.close_date, requests.descriptor, crashes.crash_date, crashes.id, crashes_location.id, crashes_location.street, crashes_location.crossstreet) AS var GROUP BY var.location, var.crosslocation ORDER BY COUNT(location) DESC LIMIT 100", (start_date, end_date, descriptor, ))
     str = ""
     for row in cur.fetchall():
         str = str + "At " + row[0] + " (and) " + row[1] +  "\n"
@@ -73,7 +105,7 @@ def query_fn9(id):
               "Vehicle 1: " + str(result[0][5]) + "\n"
               "Vehicle 2: " + str(result[0][6]) + "\n"
               "Street: " + str(result[0][11]) + "\n"
-              "Crossstreet: " + str(result[0][12]) + "\n")
+              "Cross street: " + str(result[0][12]) + "\n")
     return var
 
 def query_fn10(id):
@@ -84,5 +116,5 @@ def query_fn10(id):
            "Complaint Type: " + str(result[0][3]) + "\n"
            "Descriptor: " + str(result[0][4]) + "\n"
            "Street: " + str(result[0][17]) + "\n"
-           "Crossstreet: " + str(result[0][18]) + "\n")
+           "Cross street: " + str(result[0][18]) + "\n")
     return var

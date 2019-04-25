@@ -18,25 +18,48 @@ print "\n" + "\n" + "Welcome to the NYC 311 Requests and Car Crashes application
 while (True):
     if not admin_mode:
         print "What would you like to examine?"
-        print """1: [Street and Number of Crashes]     2: [Potential Causes of Crashes]
+        print """0: [Street Lookup]
+1: [Street and Number of Crashes]     2: [Potential Causes of Crashes]
 3: [Incident on Specific Highway]     4: [Crash Deaths per Street, ZIP, or Borough]
-5: [Multi-Car Crashes]                6: [Crashes on Street in a Period of Time]
+5: [Number of Crashes vs. Requests in a ZipCode by Date]
+6: [Crashes on Street in a Period of Time]
 7: [Potential Crashes linked to Complaint Type]
 8: [Potential Crashes linked to Complaint Reason]
 9: [Crashes Info By ID]               10: [Requests Info By ID]
-q: Quit Application"""
+11: Quit"""
 
-        topic_index = raw_input("Menu Option: ")
-
-        if topic_index == 'q':
-            print "Goodbye"
-            break
-
-        if not unicode(topic_index).isnumeric():
-            print "\nInvalid input. Please select one of the options below:\n"
-            continue
-
-        topic_index = int(topic_index)
+        topic_index = input("Menu Option: ")
+        if topic_index == 0:
+            print "[Street Lookup]"
+            print "Manhattan, Brooklyn, Queens, Bronx, Staten Island"
+            boro_name = raw_input("Enter the borough you'd like to search within: ")
+            results = query_fn0(boro_name.upper())
+            results = sorted(results)
+            i = 0
+            i_max = 99
+            end_of_page = False
+            while (not end_of_page):
+                for j in range(i, i_max + 1):
+                    if j < len(results):
+                        print results[j]
+                    else:
+                        end_of_page = True
+                        i_max = j
+                        break
+                print "---------------"
+                print "Showing streets " + str(i+1) + "-" + str(i_max + 1)
+                if (end_of_page):
+                    print "Enter: Quit lookup"
+                    lookup_cmd = raw_input()
+                    break
+                else:
+                    print "N: Next Page\nEnter: Quit lookup"
+                    lookup_cmd = raw_input()
+                    if (lookup_cmd.upper() == "N"):
+                        i += 100
+                        i_max += 100
+                    else:
+                        break
 
         if topic_index == 1:
             print "[Street and Number of Crashes]"
@@ -82,6 +105,12 @@ q: Quit Application"""
                 result = query_fn4(location_name, type_index)
                 print str(result) + " deaths in this borough."
                 continue
+        if topic_index == 5:
+            print "[Number of Crashes vs. Number of Requests in a ZipCode by Date]"
+            zipcode = raw_input("Input a zipcode: ")
+            result = query_fn5(zipcode)
+            print str(result)
+
 
         if topic_index == 6:
             print "[Crashes on Street in a Period of Time]"
@@ -89,7 +118,7 @@ q: Quit Application"""
             end_time = raw_input("Input the end time in the form (HH:MM:SS): ")
             street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
             result = query_fn6(start_time, end_time, street_name)
-            print str(result) + " crashes on this street between these provided hours." + "\n"
+            print str(result) + " crashes on this street between these provided hours over the course of this study." + "\n"
 
         if topic_index == 7:
             print "[Potential Crashes linked to Complaint Type]"
@@ -116,8 +145,11 @@ q: Quit Application"""
             id = raw_input("Input ID: ")
             result = query_fn10(id)
             print str(result)
-
-            
-        if topic_index > 10 or topic_index < 1:
-            print "\nInvalid input. Please select one of the options below:\n"
         
+        if topic_index == 11:
+            break
+            
+
+        
+        if topic_index > 11 or topic_index < 0:
+            print "Invalid\n"
