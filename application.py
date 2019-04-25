@@ -34,12 +34,11 @@ while (True):
             print "[Street Lookup]"
             print "Manhattan, Brooklyn, Queens, Bronx, Staten Island"
             boro_name = raw_input("Enter the borough you'd like to search within: ")
-            print "All boros"
-            all_boroughs = get_all_boroughs()
-            if boro_name not in all_boroughs:
-                print "Invalid boro name"
-                print "------------------------"
-                continue
+            # all_boroughs = get_all_boroughs()
+            # if boro_name in all_boroughs:
+            #     print "Invalid boro name"
+            #     print "------------------------"
+            #     continue
             results = query_fn0(boro_name.upper())
             results = sorted(results)
             i = 0

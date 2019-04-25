@@ -2,14 +2,14 @@ import psycopg2
 conn = psycopg2.connect("host=localhost dbname=requests_and_crashes user=requests_and_crashes password = requests_and_crashes ")
 cur = conn.cursor()
 
-def get_all_boroughs():
-    cur.execute("SELECT DISTINCT boro FROM crashes_location")
-    results = []
-    count = 0
-    for row in cur.fetchall():
-        results.append(row[0])
-        count += 1
-    return results
+# def get_all_boroughs():
+#     cur.execute("SELECT DISTINCT boro FROM crashes_location")
+#     results = []
+#     count = 0
+#     for row in cur.fetchall():
+#         results.append(row[0])
+#         count += 1
+#     return results
 
 # Functions to query data
 def query_fn0(boro_name):
