@@ -23,12 +23,26 @@ while (True):
 5: [Multi-Car Crashes]                6: [Crashes on Street in a Period of Time]
 7: [Potential Crashes linked to Complaint Type]
 8: [Potential Crashes linked to Complaint Reason]
-9: [Crashes Info By ID]               10: [Requests Info By ID]"""
+9: [Crashes Info By ID]               10: [Requests Info By ID]
+q: Quit Application"""
 
-        topic_index = input("Menu Option: ")
+        topic_index = raw_input("Menu Option: ")
+
+        if topic_index == 'q':
+            print "Goodbye"
+            break
+
+        if not unicode(topic_index).isnumeric():
+            print "\nInvalid input. Please select one of the options below:\n"
+            continue
+
+        topic_index = int(topic_index)
+
         if topic_index == 1:
             print "[Street and Number of Crashes]"
             street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
+            if(len(street_name == 0)):
+                print "Empty string"
             print "Specify a borough (Optional, may leave blank)"
             boro_name = raw_input()
             result = query_fn1(street_name, boro_name)
@@ -105,5 +119,5 @@ while (True):
 
             
         if topic_index > 10 or topic_index < 1:
-            print "Invalid\n"
+            print "\nInvalid input. Please select one of the options below:\n"
         
