@@ -1,0 +1,3 @@
+SELECT d, c, r
+FROM 
+NATURAL JOIN crashes_location

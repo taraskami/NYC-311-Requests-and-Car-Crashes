@@ -3,6 +3,7 @@
 
 import sys
 
+
 admin_mode = False #Admin mode lets the user write their own query.
 run_sql = True #If tables are already created, no need to redo each time.
 for i in range(len(sys.argv)):
@@ -33,6 +34,11 @@ while (True):
             print "[Street Lookup]"
             print "Manhattan, Brooklyn, Queens, Bronx, Staten Island"
             boro_name = raw_input("Enter the borough you'd like to search within: ")
+            # all_boroughs = get_all_boroughs()
+            # if boro_name in all_boroughs:
+            #     print "Invalid boro name"
+            #     print "------------------------"
+            #     continue
             results = query_fn0(boro_name.upper())
             results = sorted(results)
             i = 0
@@ -61,11 +67,11 @@ while (True):
                     else:
                         break
 
-
-        
         if topic_index == 1:
             print "[Street and Number of Crashes]"
             street_name = raw_input("Input the street you'd like to examine\nTips: you may have to try variations of spellings for street types (i.e. parkway and pkwy): ")
+            if(len(street_name == 0)):
+                print "Empty string"
             print "Specify a borough (Optional, may leave blank)"
             boro_name = raw_input()
             result = query_fn1(street_name, boro_name)
@@ -151,3 +157,7 @@ while (True):
             
         if topic_index > 11 or topic_index < 0:
             print "Invalid\n"
+
+        # if not unicode(topic_index).isnumeric():
+        #     print "\nInvalid input. Please select one of the options below:\n"
+        #     continue
